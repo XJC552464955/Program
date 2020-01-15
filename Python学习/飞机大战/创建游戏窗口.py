@@ -20,6 +20,7 @@ enemy1 = GameSprite("./images/enemy1.png", 2)
 enemy_groud = pygame.sprite.Group(enemy, enemy1)
 
 while True:
+    clock.tick(60)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -34,13 +35,13 @@ while True:
     if here_rect.y < -126:
         here_rect.y = 700
 
-
     #调用blit方法绘制图像
     screen.blit(bg, (0, 0))  # 绘制背景图像到surface
     screen.blit(player,here_rect)  # 绘制角色图像
-    pygame.display.update()  # 更新屏幕显示,可以在所有绘制工作完成之后，同意调用update方法
 
     #让精灵组调用update()和draw()方法
     #uodate - 让组中所有精灵更新位置
     enemy_groud.update()
     enemy_groud.draw(screen)
+
+    pygame.display.update()  # 更新屏幕显示,可以在所有绘制工作完成之后，同意调用update方法
