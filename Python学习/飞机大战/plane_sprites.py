@@ -13,7 +13,7 @@ PLAYER_FIRE_EVENT = pygame.USEREVENT + 1
 class GameSprite(pygame.sprite.Sprite):
     '''飞机大战游戏精灵'''
 
-    def __init__(self, image_name, speed=1):
+    def __init__(self, image_name, speedx=0, speedy=1):
         #调用父类的初始化方法
         super().__init__()
 
@@ -21,13 +21,15 @@ class GameSprite(pygame.sprite.Sprite):
         try:
             self.image = pygame.image.load(image_name)
             self.rect = self.image.get_rect()
-            self.speed = speed
+            self.speedx = speedx
+            self.speedy = speedy
         except:
             print("没找到图片")
 
     def update(self):
         #在屏幕的垂直方向上移动
-        self.rect.y += self.speed
+        self.rect.y += self.speedy
+        self.rect.x += self.speedx
 
 class BackGround(GameSprite):
     '''游戏背景精灵'''
@@ -51,7 +53,7 @@ class Eneny(GameSprite):
         #1.调用父类方法创建敌机精灵,同时指定敌机图片
         super().__init__("./images/enemy"+str(num)+".png")
         #2.指定敌机的初始速度
-        self.speed = random.randrange(1,3)
+        self.speedy = random.randrange(1,3)
 
         #3.指定敌机的初始随机位置
         self.rect.bottom = 0
@@ -96,11 +98,25 @@ class Player(GameSprite):
         self.bullet_ground = pygame.sprite.Group()
 
     def update(self):
-        self.rect.x += self.speed
+        self.rect.x += self.speedx
+        self.rect.y += self.speedy
+
+        #检测x边缘
         if self.rect.left < 0:
             self.rect.x = 0
         elif self.rect.right > SCREEN_RECT.right:
             self.rect.right = SCREEN_RECT.right
+        #检测y边缘
+        if self.rect.top < 0:
+            self.rect.y = 0
+        elif self.rect.bottom > SCREEN_RECT.bottom:
+            self.rect.bottom = SCREEN_RECT.bottom
+
+    def player_move(self,speedx=0,speedy=0):
+        self.speedx = speedx
+        self.speedy = speedy
+
+
     def fire(self):
         # print("发射子弹")
         bullet = Player_Bullet()
@@ -110,7 +126,7 @@ class Player(GameSprite):
 
 class Player_Bullet(GameSprite):
     def __init__(self):
-        super().__init__("./images/bullet1.png",-2)
+        super().__init__("./images/bullet1.png",0,-2)
 
     def update(self):
         super().update()
