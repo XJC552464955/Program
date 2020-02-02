@@ -3,6 +3,10 @@ import pygame
 
 #屏幕大小的常量
 SCREEN_RECT = pygame.Rect(0,0,480,700)
+#color
+color_red = (255, 0, 0)
+color_blue = (30,144,255)
+color_green = (0,255,0)
 #刷新的帧率
 FRAME_PER_SEC = 60
 #创建敌机的定时常量
@@ -97,6 +101,9 @@ class Player(GameSprite):
         #创建子弹精灵组
         self.bullet_ground = pygame.sprite.Group()
 
+        #玩家血条
+        self.bar = bloodline(color_green,0,700,480,8,10)
+
     def update(self):
         self.rect.x += self.speedx
         self.rect.y += self.speedy
@@ -136,3 +143,25 @@ class Player_Bullet(GameSprite):
     def __del__(self):
         # print("子弹销毁")
         pass
+
+class bloodline(object):
+    '''血条UI'''
+    def __init__(self,color, x, y, lenght, width, value = 2):
+        self.color = color
+        self.x  = x
+        self.y = y
+        self.lenght = lenght  #实时线长
+        self.width = width  #线宽
+        self.value = value * 1.0  #血量,用浮点型
+        self.weight = lenght / value  #每滴血表示的距离
+        self.color_init = color   #血条默认颜色
+
+    def update(self, canvas):
+        if self.lenght <= self.value * self.weight / 2:
+            #实时线长小于一半血量的距离时红色
+            self.color = color_red
+        else:
+            self.color = self.color_init
+        #画出线条
+        self.bar_rect = pygame.draw.line(canvas,self.color,(self.x,self.y),(self.x + self.lenght, self.y), self.width)
+

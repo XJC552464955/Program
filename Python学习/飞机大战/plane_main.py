@@ -32,6 +32,9 @@ class PlaneGame(object):
         self.player_ground = pygame.sprite.Group(self.player)
         #创建爆炸组
         self.enemy_boom = pygame.sprite.Group()
+        #血条列表
+        self.bars = []
+        self.bars.append(self.player.bar)
 
     def start_game(self):
         '''游戏启动方法'''
@@ -112,9 +115,17 @@ class PlaneGame(object):
         self.player_ground.update()
         self.player_ground.draw(self.screen)
 
+        self.bars_update()
+
         self.player.bullet_ground.update()
         self.player.bullet_ground.draw(self.screen)
 
+    def bars_update(self):
+        for bar in self.bars:
+            if bar.lenght > 0:
+                bar.update(self.screen)
+            else:
+                self.bars.remove(bar)
 
     @staticmethod   #设置静态方法
     def __pygame_over():
