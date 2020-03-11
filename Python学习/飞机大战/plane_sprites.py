@@ -22,7 +22,7 @@ PLAYER_FIRE_EVENT = pygame.USEREVENT + 1
 
 class GameSocre(object):
     global SOCRE
-    def __init__(self):
+    def     __init__(self):
         self.socre = 0
     def getvalue(self):
         self.socre = SOCRE
@@ -272,7 +272,6 @@ class CanvasOver(object):
 
     # 检测有没有点击按钮
     def event_handler(self,event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             if self.rect_again.left < pos[0] < self.rect_again.right \
                 and self.rect_again.top < pos[1] < self.rect_again.bottom:
